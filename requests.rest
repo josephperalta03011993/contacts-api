@@ -1,0 +1,6 @@
+// This is for my testing
+### Get all contacts
+GET http://localhost:8080/contacts
+
+### Get one contact
+GET http://localhost:8080/contacts/<paste-a-valid-objectId-here>
