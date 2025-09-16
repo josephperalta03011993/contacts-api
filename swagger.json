@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "API documentation for the Contacts API"
   },
-  "host": "https://contacts-api-iljh.onrender.com/api-docs",
+  "host": "contacts-api-iljh.onrender.com/api-docs",
   "basePath": "/",
   "schemes": ["https"],
   "paths": {
