@@ -1,6 +1,9 @@
 const { ObjectId } = require('mongodb');
 const { connectDb } = require('../db/connect');
 
+const collectionName = 'contacts';
+
+// GET ALL
 const getAllContacts = async (req, res) => {
   try {
     const db = await connectDb();
@@ -11,6 +14,7 @@ const getAllContacts = async (req, res) => {
   }
 };
 
+// GET BY ID
 const getContactById = async (req, res) => {
   try {
     const db = await connectDb();
@@ -25,4 +29,44 @@ const getContactById = async (req, res) => {
   }
 };
 
-module.exports = { getAllContacts, getContactById };
+// POST
+const createContact = async (req, res) => {
+  try {
+    const db = await connectDb();
+    const result = await db.collection(collectionName).insertOne(req.body);
+    res.status(201).json({ id: result.insertedId });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// PUT
+const updateContact = async (req, res) => {
+  try {
+    const db = await connectDb();
+    const result = await db.collection(collectionName).updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: req.body }
+    );
+
+    if (result.matchedCount === 0) return res.sendStatus(404);
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// DELETE
+const deleteContact = async (req, res) => {
+  try {
+    const db = await connectDb();
+    const result = await db.collection(collectionName).deleteOne({ _id: new ObjectId(req.params.id) });
+
+    if (result.deletedCount === 0) return res.sendStatus(404);
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+module.exports = { getAllContacts, getContactById, createContact, updateContact, deleteContact };
